@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Client WebSocket</title>
+</head>
+<body>
+<script>
+    var socket;
+    if(typeof(WebSocket) == "undefined") {
+        console.log("您的浏览器不支持WebSocket");
+    }else{
+        console.log("您的浏览器支持WebSocket");
+        //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+        socket = new WebSocket("ws://localhost:8080/websocket/1");
+        //打开事件
+        socket.onopen = function() {
+            console.log("Socket 已打开");
+            //sendMsg("这是来自客户端的消息" + location.href + new Date());
+        };
+        function sendMsg(message){
+            console.log(message);
+            socket.send("这是来自客户端的消息:"+ message);
+        }
+        //获得消息事件
+        socket.onmessage = function(msg) {
+            console.log(msg.data);
+            document.getElementById("msg").innerText = msg.data;
+            //发现消息进入    开始处理前端触发逻辑
+        };
+        //关闭事件
+        socket.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+            //此时可以尝试刷新页面
+        }
+    }
+</script>
+<noscript><h2 style="color: #ff0000">Websocket 示例页面</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="name">消息</label>
+                    <input type="text" id="name" class="form-control" placeholder="请输入内容...">
+                    <button id="send" class="btn btn-default" onclick="sendMsg(document.getElementById('name').value)">Send</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <thead>
+                <tr>
+                    <label id="msg"></label>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

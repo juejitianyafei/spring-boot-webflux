@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+#mongodb
+#spring:
+#  data:
+#    mongodb:
+#      host: localhost
+#      database: admin
+#      port: 27017
+
+
+#redis
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    timeout: 5000
